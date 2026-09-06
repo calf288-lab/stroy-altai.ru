@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, MessageSquare, Send, Menu, X, MapPin, Clock, ShieldCheck } from 'lucide-react';
+import { Phone, MessageSquare, Send, Menu, X, MapPin, Clock, ShieldCheck, Snowflake } from 'lucide-react';
 import { CONTACT_INFO, ALTAI_REGIONS } from '../data/altaiData';
 
 interface HeaderProps {
@@ -64,8 +64,11 @@ export default function Header({ onOpenConsultation }: HeaderProps) {
               <ShieldCheck className="w-3.5 h-3.5 text-[#55a26a]" />
               Официальный договор и гарантия 5 лет
             </span>
-            <span className="text-[#69786c]">|</span>
-            <span className="text-[#8e9d91]">Домен: <strong className="text-white font-mono">stroy-altai.ru</strong></span>
+            <span className="text-[#414f43]">|</span>
+            <a href="#interior-winter" className="flex items-center gap-1.5 text-[#d3a168] hover:text-[#e8b67e] font-semibold transition-colors">
+              <Snowflake className="w-3.5 h-3.5 text-[#73c7eb] animate-pulse" />
+              <span>Зимний сезон: отделка квартир и домов под ключ</span>
+            </a>
           </div>
         </div>
       </div>
@@ -93,13 +96,18 @@ export default function Header({ onOpenConsultation }: HeaderProps) {
                 </span>
               </div>
               <p className="text-[11px] text-[#8e9c91] leading-tight">
-                Строительство домов и бань из алтайского кедра
+                Строительство домов, бань и отделка квартир под ключ
               </p>
             </div>
           </a>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-[#c4cfc7]">
+          <nav className="hidden lg:flex items-center gap-5 text-sm font-medium text-[#c4cfc7]">
+            <a href="#interior-winter" className="text-[#d3a168] hover:text-[#e8b67e] transition-colors flex items-center gap-1.5 font-semibold">
+              <Snowflake className="w-3.5 h-3.5 text-[#73c7eb]" />
+              <span>Зимняя отделка</span>
+              <span className="text-[10px] bg-[#292014] text-[#e8b67e] px-1.5 py-0.2 rounded border border-[#543d20]">Сезон</span>
+            </a>
             <a href="#services" className="hover:text-[#d3a168] transition-colors">Услуги и цены</a>
             <a href="#calculator" className="hover:text-[#d3a168] transition-colors flex items-center gap-1">
               <span>Калькулятор сметы</span>
@@ -185,6 +193,17 @@ export default function Header({ onOpenConsultation }: HeaderProps) {
       {mobileMenuOpen && (
         <div className="sm:hidden bg-[#141815] border-b border-[#2b372d] px-4 py-5 animate-in slide-in-from-top-2">
           <div className="flex flex-col gap-3 text-base font-medium text-[#d3ded6] mb-5">
+            <a 
+              href="#interior-winter" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-2 border-b border-[#212b23] text-[#d3a168] flex items-center justify-between font-bold"
+            >
+              <span className="flex items-center gap-2">
+                <Snowflake className="w-4 h-4 text-[#73c7eb]" />
+                Зимняя отделка квартир и домов
+              </span>
+              <span className="text-xs bg-[#b68249] text-black px-2 py-0.5 rounded font-extrabold">Сезон 2026</span>
+            </a>
             <a 
               href="#services" 
               onClick={() => setMobileMenuOpen(false)}

@@ -6,12 +6,12 @@ interface CalculatorProps {
   onOpenConsultationWithData?: (summary: string) => void;
 }
 
-type ProjectType = 'house' | 'banya' | 'gazebo' | 'finishing' | 'foundation' | 'repair';
+type ProjectType = 'apartment' | 'bathroom' | 'house' | 'banya' | 'finishing' | 'foundation';
 
 export default function Calculator({ onOpenConsultationWithData }: CalculatorProps) {
-  const [projectType, setProjectType] = useState<ProjectType>('house');
-  const [area, setArea] = useState<number>(100);
-  const [material, setMaterial] = useState<string>('cedar_log');
+  const [projectType, setProjectType] = useState<ProjectType>('apartment');
+  const [area, setArea] = useState<number>(55);
+  const [material, setMaterial] = useState<string>('comfort');
   const [scope, setScope] = useState<'turnkey' | 'shell' | 'work_only'>('turnkey');
   const [location, setLocation] = useState<string>('Горно-Алтайск');
   const [clientPhone, setClientPhone] = useState('');
@@ -21,39 +21,47 @@ export default function Calculator({ onOpenConsultationWithData }: CalculatorPro
 
   // Dynamic calculations based on Vasily's real rates
   const calculation = useMemo(() => {
-    let baseRate = 48000; // House per m²
-    let defaultTime = '70-90 дней';
+    let baseRate = 9500; // Apartment per m²
+    let defaultTime = '25-45 дней';
 
-    if (projectType === 'banya') {
+    if (projectType === 'apartment') {
+      baseRate = 9500;
+      defaultTime = '25-45 дней';
+    } else if (projectType === 'bathroom') {
+      baseRate = 14000;
+      defaultTime = '10-18 дней';
+    } else if (projectType === 'house') {
+      baseRate = 48000;
+      defaultTime = '70-90 дней';
+    } else if (projectType === 'banya') {
       baseRate = 40000;
       defaultTime = '35-50 дней';
-    } else if (projectType === 'gazebo') {
-      baseRate = 22000;
-      defaultTime = '14-25 дней';
     } else if (projectType === 'finishing') {
-      baseRate = 18000;
+      baseRate = 16000;
       defaultTime = '30-60 дней';
     } else if (projectType === 'foundation') {
       baseRate = 8500; // per m³
       defaultTime = '15-30 дней';
-    } else if (projectType === 'repair') {
-      baseRate = 12000;
-      defaultTime = '10-20 дней';
     }
 
     // Material modifier
     let materialMultiplier = 1.0;
-    if (material === 'cedar_log') materialMultiplier = 1.15;
-    if (material === 'cedar_beam') materialMultiplier = 1.10;
-    if (material === 'pine_beam') materialMultiplier = 0.92;
-    if (material === 'larch') materialMultiplier = 1.25;
+    if (material === 'cedar_log' || material === 'premium') materialMultiplier = 1.25;
+    if (material === 'cedar_beam' || material === 'business') materialMultiplier = 1.15;
+    if (material === 'pine_beam' || material === 'comfort') materialMultiplier = 1.0;
+    if (material === 'larch' || material === 'eco_accent') materialMultiplier = 1.20;
 
     // Scope modifier
     let scopeMultiplier = 1.0;
     if (scope === 'shell') scopeMultiplier = 0.70;
-    if (scope === 'work_only') scopeMultiplier = 0.45;
+    if (scope === 'work_only') scopeMultiplier = 0.55;
 
-    const totalEstimate = Math.round(area * baseRate * materialMultiplier * scopeMultiplier);
+    let totalEstimate = Math.round(area * baseRate * materialMultiplier * scopeMultiplier);
+    // Minimum floor for bathroom
+    if (projectType === 'bathroom' && totalEstimate < 65000) {
+      totalEstimate = 65000;
+    }
+
     const minEstimate = Math.round(totalEstimate * 0.95);
     const maxEstimate = Math.round(totalEstimate * 1.08);
 
@@ -67,17 +75,17 @@ export default function Calculator({ onOpenConsultationWithData }: CalculatorPro
 
   const getTypeName = () => {
     switch (projectType) {
-      case 'house': return 'Дом из дерева';
+      case 'apartment': return 'Отделка квартиры под ключ (зима)';
+      case 'bathroom': return 'Ремонт санузла / ванной комнаты';
+      case 'house': return 'Дом из кедра / бруса';
       case 'banya': return 'Сибирская баня';
-      case 'gazebo': return 'Беседка / зона отдыха';
-      case 'finishing': return 'Внутренняя отделка';
+      case 'finishing': return 'Внутренняя отделка коттеджа';
       case 'foundation': return 'Фундамент на рельефе';
-      case 'repair': return 'Ремонт / замена венцов';
     }
   };
 
   const getMessengerText = () => {
-    const text = `Здравствуйте! Рассчитал на сайте ${CONTACT_INFO.domain}:
+    const text = `Здравствуйте! Рассчитал на сайте СтройАлтай:
 Тип: ${getTypeName()}
 Объем/Площадь: ${area} ${projectType === 'foundation' ? 'м³' : 'м²'}
 Локация: ${location}
@@ -126,22 +134,24 @@ export default function Calculator({ onOpenConsultationWithData }: CalculatorPro
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {[
-                  { id: 'house', label: 'Дом из кедра / бруса', hint: 'от 48 тыс. ₽/м²' },
-                  { id: 'banya', label: 'Баня под ключ', hint: 'от 40 тыс. ₽/м²' },
-                  { id: 'gazebo', label: 'Беседка / барбекю', hint: 'от 120 тыс. ₽' },
-                  { id: 'finishing', label: 'Внутренняя отделка', hint: 'от 18 тыс. ₽/м²' },
-                  { id: 'foundation', label: 'Фундамент на склоне', hint: 'от 8.5 тыс. ₽/м³' },
-                  { id: 'repair', label: 'Замена венцов / кровля', hint: 'от 2.5 тыс. ₽/м' },
+                  { id: 'apartment', label: 'Отделка квартиры (зима)', hint: 'от 9.5 тыс. ₽/м²', defaultArea: 58 },
+                  { id: 'bathroom', label: 'Санузел / ванная', hint: 'от 65 тыс. ₽', defaultArea: 6 },
+                  { id: 'house', label: 'Дом из кедра / бруса', hint: 'от 48 тыс. ₽/м²', defaultArea: 110 },
+                  { id: 'banya', label: 'Баня сибирская', hint: 'от 40 тыс. ₽/м²', defaultArea: 48 },
+                  { id: 'finishing', label: 'Отделка коттеджа / усадьбы', hint: 'от 16 тыс. ₽/м²', defaultArea: 140 },
+                  { id: 'foundation', label: 'Фундамент на склоне', hint: 'от 8.5 тыс. ₽/м³', defaultArea: 25 },
                 ].map((item) => (
                   <button
                     key={item.id}
                     type="button"
                     onClick={() => {
                       setProjectType(item.id as ProjectType);
-                      if (item.id === 'foundation') setArea(25);
-                      else if (item.id === 'gazebo') setArea(30);
-                      else if (item.id === 'banya') setArea(48);
-                      else if (item.id === 'house') setArea(120);
+                      setArea(item.defaultArea);
+                      if (item.id === 'apartment' || item.id === 'bathroom') {
+                        setMaterial('comfort');
+                      } else {
+                        setMaterial('cedar_log');
+                      }
                     }}
                     className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                       projectType === item.id
@@ -168,32 +178,37 @@ export default function Calculator({ onOpenConsultationWithData }: CalculatorPro
               </div>
               <input
                 type="range"
-                min={projectType === 'foundation' ? 5 : 15}
-                max={projectType === 'foundation' ? 120 : 350}
-                step={projectType === 'foundation' ? 1 : 5}
+                min={projectType === 'foundation' ? 5 : projectType === 'bathroom' ? 3 : 20}
+                max={projectType === 'foundation' ? 120 : projectType === 'bathroom' ? 25 : 300}
+                step={projectType === 'foundation' || projectType === 'bathroom' ? 1 : 5}
                 value={area}
                 onChange={(e) => setArea(Number(e.target.value))}
                 className="w-full h-2 bg-[#253328] rounded-lg appearance-none cursor-pointer accent-[#d3a168]"
               />
               <div className="flex justify-between text-[10px] text-[#6d7c71] mt-1.5">
-                <span>{projectType === 'foundation' ? '5 м³' : '15 м²'}</span>
-                <span>{projectType === 'foundation' ? '60 м³' : '180 м²'}</span>
-                <span>{projectType === 'foundation' ? '120 м³' : '350+ м²'}</span>
+                <span>{projectType === 'foundation' ? '5 м³' : projectType === 'bathroom' ? '3 м²' : '20 м²'}</span>
+                <span>{projectType === 'foundation' ? '60 м³' : projectType === 'bathroom' ? '12 м²' : '150 м²'}</span>
+                <span>{projectType === 'foundation' ? '120 м³' : projectType === 'bathroom' ? '25 м²' : '300+ м²'}</span>
               </div>
             </div>
 
             {/* 3. Material */}
             <div>
               <label className="block text-xs font-bold text-[#b8c7bc] uppercase tracking-wider mb-2.5">
-                3. Основной материал:
+                3. {projectType === 'apartment' || projectType === 'bathroom' ? 'Комплектация отделки:' : 'Основной материал:'}
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                {[
+                {(projectType === 'apartment' || projectType === 'bathroom' ? [
+                  { id: 'comfort', name: 'Комфорт', note: 'Knauf, ламинат 33, плитка' },
+                  { id: 'business', name: 'Бизнес', note: 'Керамогранит, теплый пол' },
+                  { id: 'premium', name: 'Премиум', note: 'Дизайн-проект, треки' },
+                  { id: 'eco_accent', name: 'Эко-Алтай', note: 'Кедр + камень + плитка' }
+                ] : [
                   { id: 'cedar_log', name: 'Кедр алтайский (сруб)', note: 'Зимняя рубка' },
                   { id: 'cedar_beam', name: 'Профилир. брус', note: 'Кедр/Сосна' },
                   { id: 'pine_beam', name: 'Сосна зимняя', note: 'Экономичный' },
                   { id: 'larch', name: 'Лиственница', note: 'Повыш. прочность' }
-                ].map((mat) => (
+                ]).map((mat) => (
                   <button
                     key={mat.id}
                     type="button"

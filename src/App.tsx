@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import WinterInteriorSection from './components/WinterInteriorSection';
 import Calculator from './components/Calculator';
 import Services from './components/Services';
 import Portfolio from './components/Portfolio';
@@ -37,6 +38,9 @@ export default function App() {
       <main>
         {/* 1. Hero with mountain background, badges and quick rates */}
         <Hero onOpenConsultation={() => handleOpenConsultation('Предварительный расчет объекта')} />
+
+        {/* 1.5 Winter Interior Finishing Section - Key seasonal focus */}
+        <WinterInteriorSection onOpenConsultation={(title) => handleOpenConsultation(title || 'Зимняя отделка помещений под ключ')} />
 
         {/* 2. Interactive Calculator with real Altai coefficients and WhatsApp/MAX export */}
         <Calculator onOpenConsultationWithData={(data) => handleOpenConsultation(data)} />

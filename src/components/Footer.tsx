@@ -30,8 +30,8 @@ export default function Footer({ onOpenPrivacy }: FooterProps) {
             <p className="text-xs text-[#8a9b8e] leading-relaxed">
               Экологичное строительство домов из сибирского кедра, бань, беседок с зоной барбекю, фундаментов на горном рельефе и чистовой отделки под ключ.
             </p>
-            <div className="text-xs text-[#a2b5a6] font-mono">
-              Домен: {CONTACT_INFO.domain}
+            <div className="text-xs text-[#d3a168] font-medium flex items-center gap-1.5">
+              <span>❄️ Зимний сезон: внутренняя отделка квартир и домов</span>
             </div>
           </div>
 
@@ -41,6 +41,11 @@ export default function Footer({ onOpenPrivacy }: FooterProps) {
               Разделы сайта
             </div>
             <ul className="space-y-2 text-xs">
+              <li>
+                <a href="#interior-winter" className="text-[#d3a168] hover:text-[#e8b67e] transition-colors font-semibold flex items-center gap-1">
+                  <span>❄️ Зимняя отделка квартир</span>
+                </a>
+              </li>
               <li>
                 <a href="#services" className="hover:text-[#d3a168] transition-colors">Услуги и расценки 2026</a>
               </li>

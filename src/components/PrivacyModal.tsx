@@ -33,7 +33,7 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
         {/* Body */}
         <div className="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-[#b5c5ba] leading-relaxed">
           <p>
-            Настоящая Политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» и действует в отношении всех данных, которые оператор ({CONTACT_INFO.legal.ip}, ОГРНИП {CONTACT_INFO.legal.ogrnip}) может получить о пользователе во время использования сайта <strong className="text-white">{CONTACT_INFO.domain}</strong>.
+            Настоящая Политика обработки персональных данных составлена в соответствии с требованиями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» и действует в отношении всех данных, которые оператор ({CONTACT_INFO.legal.ip}, ОГРНИП {CONTACT_INFO.legal.ogrnip}) может получить о пользователе во время использования сайта артели <strong className="text-white">«СтройАлтай»</strong>.
           </p>
 
           <h4 className="text-sm font-bold text-white font-heading pt-2">
